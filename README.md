@@ -1,1 +1,1 @@
-oop basic concepts 2nd sem.
+oop basic concepts for 2nd sem.
