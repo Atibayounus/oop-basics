@@ -1,0 +1,103 @@
+#include <iostream>
+using namespace std;
+
+// Base Class
+class BankAccount {
+private:
+    double balance;   // Encapsulation
+
+protected:
+    string holderName;
+
+public:
+    BankAccount(string name, double bal) {
+        holderName = name;
+        balance = bal;
+    }
+
+    void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            cout << amount << " deposited successfully\n";
+        }
+    }
+
+    virtual void withdraw(double amount) {
+        if (amount <= balance) {
+            balance -= amount;
+            cout << amount << " withdrawn successfully\n";
+        }
+        else {
+            cout << "Insufficient balance\n";
+        }
+    }
+
+    double getBalance() {
+        return balance;
+    }
+
+    virtual void display() {
+        cout << "Account Holder: " << holderName << endl;
+        cout << "Balance: " << balance << endl;
+    }
+};
+
+
+// Derived Class
+class SavingAccount : public BankAccount {
+private:
+    double interestRate;
+
+public:
+    SavingAccount(string name, double bal, double rate)
+        : BankAccount(name, bal) {
+        interestRate = rate;
+    }
+
+    void addInterest() {
+        double interest = getBalance() * interestRate / 100;
+        deposit(interest);
+        cout << "Interest Added: " << interest << endl;
+    }
+
+    void display() override {
+        cout << "\nSaving Account\n";
+        BankAccount::display();
+        cout << "Interest Rate: " << interestRate << "%\n";
+    }
+};
+
+
+// Another Derived Class
+class CurrentAccount : public BankAccount {
+
+public:
+    CurrentAccount(string name, double bal)
+        : BankAccount(name, bal) {}
+
+    void withdraw(double amount) override {
+        cout << "Current Account Withdrawal\n";
+        BankAccount::withdraw(amount);
+    }
+};
+
+
+int main() {
+
+    SavingAccount user1("Ali", 5000, 5);
+    CurrentAccount user2("Ahmed", 3000);
+
+
+    user1.display();
+    user1.deposit(2000);
+    user1.addInterest();
+
+    cout << "\n-----------------\n";
+
+    user2.display();
+    user2.withdraw(1000);
+    user2.display();
+
+
+    return 0;
+}
